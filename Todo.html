@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        .head {
+            text-align: center;
+            font-size: 60px;
+            /* font-family: Georgia, 'Times New Roman', Times, serif; */
+            color: rgb(123, 7, 138);
+            
+            
+        }
+
+        .input {
+            padding: 0px;
+            margin-left: 260px;
+            font-size: 30px;
+            width: 60%;
+            height: 50px;
+            border: 3px solid rgb(123, 7, 138);
+            border-radius: 10px;
+            
+        }
+
+        button {
+            color: white;
+            background-color: rgb(123, 7, 138);
+            margin-left: 20px;
+            font-size: 23px;
+            padding: 0.9%;
+            border-radius: 10px;
+        }
+
+        .listElement-container {
+            margin-top: 15px;
+            margin-left: 190px;
+
+            display: flex;
+            flex-direction: row;
+        }
+
+        .checkbox-container {
+            width: 20px;
+            height: 20px;
+            margin-top: 47px;
+           /* margin-right: 100px; */
+            /* margin-left: 180px; */
+
+        }
+
+        .div-container {
+            background-color: rgb(253, 248, 253);
+            color: rgb(151, 32, 139);
+            padding: 5%;
+            width: 53%;
+            padding: 2px;
+            display: flex;
+            flex-direction: row;
+            font-size: 20px;
+    
+            border-radius: 5px;
+            height: 50px;
+            margin-top: 30px;
+            text-align: center;
+            border: 2px solid;
+            /* margin-right: 290px;
+             */
+             margin-left: 10px;
+        }
+
+        .div-delete {
+            /* background-color: rgb(130, 45, 142); */
+            /* color: white; */
+            text-align: right;
+            width: 100%;
+
+
+        }
+
+        .delete-icon {
+            padding: 10px;
+        }
+
+
+        .cross {
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+
+<body style="background: linear-gradient(rgb(236, 236, 236),pink);">
+    <div class="maincontainer">
+        <div class="headcontainer">
+            <h1 class="head">Task Manager</h1>
+            <input type="text" placeholder="  Add your task" class="input" id="inputId">
+            <button id="addbtn" onclick="add()">Add it</button>
+
+            <ul id="underlist"></ul>
+        </div>
+    </div>
+
+    <script>
+        let underlistA = document.getElementById("underlist");
+        let task = [
+            { item: "Go Home", num: 1 },
+            { item: "Work Hard", num: 2 },
+            { item: "Practise daily", num: 3 },
+            { item: "Drink plenty of water", num: 4 },
+        ];
+        function taskconfirm(checkboxId, labelId) {
+            let checkboxIdA = document.getElementById(checkboxId);
+            let labelIdA = document.getElementById(labelId);
+            labelIdA.classList.toggle("cross");
+        }
+        function deleteitem(listId) {
+            let listcontainerA = document.getElementById(listId);
+            underlistA.removeChild(listcontainerA);
+        }
+        function tasklist(i) {
+            let listId = "list" + i.num;
+            let labelId = "label" + i.num;
+            let checkboxId = "checkbox" + i.num;
+
+            //create list item
+            let listElement = document.createElement("li");
+            listElement.classList.add("listElement-container");
+            listElement.id = listId;
+            underlistA.appendChild(listElement);
+
+            //create checkbox
+            let checkboxA = document.createElement("input");
+            checkboxA.type = "checkbox";
+            checkboxA.id = checkboxId;
+            checkboxA.classList.add("checkbox-container");
+            checkboxA.onclick = function () {
+                taskconfirm(checkboxId, labelId);
+            }
+            listElement.appendChild(checkboxA);
+
+
+            //crete div for label==>[label]
+            let divelement = document.createElement("div");
+            divelement.classList.add("div-container");
+            listElement.appendChild(divelement);
+
+            //now crete label
+            let labelElementA = document.createElement("label");
+            labelElementA.setAttribute("for", checkboxId);
+            labelElementA.textContent = i.item;
+            labelElementA.id = labelId;
+            
+            divelement.appendChild(labelElementA);
+
+            // crete div for delete icon
+            let divdelete = document.createElement("div");
+            divdelete.classList.add("div-delete");
+            divelement.appendChild(divdelete);
+
+            //crete delete icon
+            let iconA = document.createElement("i");
+            iconA.classList.add("far", "fa-trash-alt", "delete-icon");
+            iconA.onclick = function () {
+                deleteitem(listId);
+            }
+            divdelete.appendChild(iconA);
+        }
+        for (let i of task) {
+            tasklist(i);
+        }
+
+        let addbtnA = document.getElementById("addbtn");
+        function add() {
+            let inputA = document.getElementById("inputId");
+            let use = inputA.value;
+            let count = addbtnA.length + 1;
+            let anotherlist = { item:use, num:count };
+            task.push(anotherlist);
+            tasklist(anotherlist);
+            inputA.value = "";
+        }
+        addbtnA.onclick = function () {
+            add()
+        }
+    </script>
+</body>
+
+</html>
